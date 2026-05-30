@@ -1,0 +1,29 @@
+/**:
+  ros__parameters:
+    # 舵机指令发布频率(Hz)
+    # 建议范围:20~100 Hz,与下位机 ESP32-S3 接收能力匹配。
+    publish_rate: 50.0
+
+    # 关节顺序 —— 决定 /servo_angles 数组的索引含义,以及哪些关节会被
+    # FJT action 的 trajectory.joint_names 拿来匹配并写入 joint_map_。
+    # **必须** 与 arm 固件里 PCA9685 通道 0..N-1 一一对应。
+    joint_names:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+
+    # 关节启动 home 位置(radians)。长度要跟 joint_names 一致。
+    # 默认值 = [90°, 90°, 90°, 90°, 90°, 60°] —— 跟 arm 固件
+    # `home_angles[]` 完全对齐。joint_map_ 一开始就是这些值,所以即便
+    # 第一个收到的 FJT goal 只控夹爪(joint_6),臂上 5 个关节也会被
+    # publish 成 home,而不是 0(0 会让臂瞬间冲下来)。
+    home_positions_rad:
+      - 1.5707963267948966     # joint_1 = π/2 = 90°
+      - 1.5707963267948966     # joint_2
+      - 1.5707963267948966     # joint_3
+      - 1.5707963267948966     # joint_4
+      - 1.5707963267948966     # joint_5
+      - 1.0471975511965976     # joint_6 = π/3 = 60°
